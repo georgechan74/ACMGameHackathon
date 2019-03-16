@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "147877107544",
+    "firebase_url": "https://acmgamehackathon-52a67.firebaseio.com",
+    "project_id": "acmgamehackathon-52a67",
+    "storage_bucket": "acmgamehackathon-52a67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147877107544:android:c9937a0012bfdd41",
+        "android_client_info": {
+          "package_name": "com.example.acmgamehackathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147877107544-enttnndtgl55medhtvhidkd72mqcakpj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW6NYzYnnB9Hfm3kDGkkpdO9FqGkcyQtE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
