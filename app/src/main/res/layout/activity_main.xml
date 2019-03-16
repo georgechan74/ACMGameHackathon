@@ -4,28 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:background="@drawable/default_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center"
-        >
+        android:gravity="center">
         <ImageView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:src="@drawable/start_game"
             android:id="@+id/startGame"
-            android:clickable="true"/>
+            android:onClick="startGame"/>
 
         <ImageView
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:src="@drawable/score_history"
             android:id="@+id/scoreHistory"
-            android:clickable="true"/>
+            android:onClick="scoreHistory"/>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
