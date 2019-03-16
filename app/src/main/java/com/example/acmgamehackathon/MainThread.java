@@ -1,4 +1,4 @@
-package com.example.acmgamehackathon.models;
+package com.example.acmgamehackathon;
 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
