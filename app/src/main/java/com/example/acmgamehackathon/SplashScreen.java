@@ -11,6 +11,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.example.acmgamehackathon.activities.GameActivity;
+
 public class SplashScreen extends AppCompatActivity {
     private ImageView logo;
     private static int splashTimeOut=3000;
@@ -28,7 +30,7 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(SplashScreen.this,MainActivity.class);
+                Intent i = new Intent(SplashScreen.this, GameActivity.class);
                 startActivity(i);
                 finish();
             }
