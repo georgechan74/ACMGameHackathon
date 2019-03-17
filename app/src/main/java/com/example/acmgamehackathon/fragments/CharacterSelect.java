@@ -8,13 +8,18 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.acmgamehackathon.R;
+import com.example.acmgamehackathon.menu.Character;
 import com.example.acmgamehackathon.menu.MenuItems;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import me.crosswall.lib.coverflow.CoverFlow;
 import me.crosswall.lib.coverflow.core.PageItemClickListener;
@@ -25,6 +30,8 @@ import me.crosswall.lib.coverflow.core.PagerContainer;
  */
 public class CharacterSelect extends Fragment {
 
+    final ArrayList<Character> selectionArray = new ArrayList<Character>();
+    final ArrayList<Character> tempArray = new ArrayList<Character>(Arrays.asList(MenuItems.items));
 
     public CharacterSelect() {
         // Required empty public constructor
@@ -49,45 +56,6 @@ public class CharacterSelect extends Fragment {
 
         pager.setClipChildren(false);
 
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(final int position, final float positionOffset, final int i1) {
-                pager.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(position == 0){
-                            Toast.makeText(getContext(), "Deric", Toast.LENGTH_LONG).show();
-                        }
-                        else if(position == 1){
-                            Toast.makeText(getContext(), "Deric", Toast.LENGTH_LONG).show();
-
-                        }
-                        else if(position == 2){
-                            Toast.makeText(getContext(), "Deric", Toast.LENGTH_LONG).show();
-
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-
-        mContainer.setPageItemClickListener(new PageItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(getActivity(),"position:" + position,Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         boolean showRotate = getActivity().getIntent().getBooleanExtra("showRotate",true);
 
@@ -105,12 +73,47 @@ public class CharacterSelect extends Fragment {
 
     private class MyPagerAdapter extends PagerAdapter {
 
+
+
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.character_item,null);
+        public Object instantiateItem(ViewGroup container, final int position) {
+
+            final View view = LayoutInflater.from(getActivity()).inflate(R.layout.character_item,null);
+
             ImageView imageView = (ImageView) view.findViewById(R.id.character);
-            imageView.setImageDrawable(getResources().getDrawable(MenuItems.items[position]));
+            Log.e("THIS TEST", MenuItems.items[position].getFirstImage() + "");
+            imageView.setImageDrawable(getResources().getDrawable(MenuItems.items[position].getFirstImage()));
             container.addView(view);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        if(selectionArray.size()!= 1){
+                            selectionArray.add(tempArray.get(position));
+                            ImageView imageView = (ImageView) view.findViewById(R.id.taken);
+                            imageView.setVisibility(view.VISIBLE);
+                            Log.e("size", selectionArray.size() + " ");
+                        }else{
+                            selectionArray.add(tempArray.get(position));
+                            VersusFragment versusFragment = new VersusFragment();
+
+                            //Bundle
+                            Bundle bundle = new Bundle();
+                            bundle.putString("plyr1Name", selectionArray.get(0).getUrlName());
+                            bundle.putString("plyr1Image", selectionArray.get(0).getUrlImage());
+                            bundle.putString("plyr2Name", selectionArray.get(1).getUrlName());
+                            bundle.putString("plyr2Image", selectionArray.get(1).getUrlImage());
+                            versusFragment.setArguments(bundle);
+
+                            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                                    getActivity().getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.content, versusFragment);
+                            fragmentTransaction.commit();
+                            Toast.makeText(getContext(), selectionArray.size() + " is full ", Toast.LENGTH_SHORT).show();
+                        }
+//                        Toast.makeText(getContext(), tempArray.get(position).getName() + " ", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), tempArray.get(position).getName() + " ", Toast.LENGTH_SHORT).show();
+                }
+            });
             return view;
         }
 
@@ -128,6 +131,7 @@ public class CharacterSelect extends Fragment {
         public boolean isViewFromObject(View view, Object object) {
             return (view == object);
         }
+
     }
 
 }
