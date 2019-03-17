@@ -4,11 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
+
+import com.example.acmgamehackathon.menu.ScoreHistory;
+import com.example.acmgamehackathon.menu.StartGame;
+
+import android.util.Log;
+import android.widget.Button;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
+    private ImageView menuItem;
     private HashMap<String, String> mValues;
     private RecyclerView mRecyclerView;
     private TextView mTV;
@@ -44,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        setContentView(R.layout.activity_main);
+      
         Log.d(TAG, "testing");
         mDatabase = FirebaseDatabase.getInstance();
         mReference = mDatabase.getReference("Matches");
@@ -79,4 +89,12 @@ public class MainActivity extends AppCompatActivity {
         });
         Log.d(TAG, "finished");
     }
+
+    public void scoreHistory(View view) {
+        Intent intent = new Intent(this, ScoreHistory.class);
+        this.startActivity(intent);    }
+
+    public void startGame(View view) {
+        Intent intent = new Intent(this, StartGame.class);
+        this.startActivity(intent);    }
 }
