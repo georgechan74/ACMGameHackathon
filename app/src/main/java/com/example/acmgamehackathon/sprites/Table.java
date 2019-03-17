@@ -1,4 +1,4 @@
-package com.example.acmgamehackathon.model;
+package com.example.acmgamehackathon.sprites;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -10,7 +10,7 @@ public class Table {
     private int height;
     private int width;
 
-    public Table(int screenHeight,int screenWidth) {
+    public Table(int screenWidth, int screenHeight) {
         this.height = screenHeight;
         this.width = screenWidth;
     }
