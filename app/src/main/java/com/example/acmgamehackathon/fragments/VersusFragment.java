@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.acmgamehackathon.GameSession;
 import com.example.acmgamehackathon.MainActivity;
 import com.example.acmgamehackathon.R;
 import com.example.acmgamehackathon.SplashScreen;
@@ -54,11 +55,10 @@ public class VersusFragment extends Fragment {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-//                    Intent i = new Intent(SplashScreen.this, MainActivity.class);
-//                    startActivity(i);
+                    Intent startGameSession = new Intent(getActivity(), GameSession.class);
+                    startActivity(startGameSession);
                 }
             },5000);
-
         }
         return inflater.inflate(R.layout.fragment_versus, container, false);
     }

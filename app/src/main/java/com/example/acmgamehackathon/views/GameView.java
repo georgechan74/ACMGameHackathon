@@ -8,22 +8,27 @@ import android.view.SurfaceView;
 
 import com.example.acmgamehackathon.MainThread;
 
+import com.example.acmgamehackathon.sprites.BatSprite;
 import com.example.acmgamehackathon.sprites.Table;
 import com.example.acmgamehackathon.sprites.BallSprite;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
-    private MainThread thread;
-    private Table table;
-    private BallSprite ball;
+    private MainThread mThread;
+    private Table mTable;
+    private BallSprite mBall;
+    private BatSprite mBat;
+    private BatSprite mBat2;
     private int height = Resources.getSystem().getDisplayMetrics().heightPixels;
     private int width = Resources.getSystem().getDisplayMetrics().widthPixels;
 
     public GameView(Context context,int screenWidth,int screenHeight) {
         super(context);
         getHolder().addCallback(this);
-        thread = new MainThread(getHolder(), this);
-        table = new Table(height,width);
-        ball = new BallSprite(screenWidth,screenHeight);
+        mThread = new MainThread(getHolder(), this);
+        mTable = new Table(height,width);
+        mBall = new BallSprite(screenWidth,screenHeight);
+        mBat = new BatSprite(screenWidth,screenHeight,1);
+        mBat2 = new BatSprite(screenWidth,screenHeight,2);
         setFocusable(true);
     }
 
@@ -34,8 +39,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        thread.setRunning(true);
-        thread.start();
+        mThread.setRunning(true);
+        mThread.start();
 
     }
 
@@ -44,8 +49,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         boolean retry = true;
         while (retry) {
             try {
-                thread.setRunning(false);
-                thread.join();
+                mThread.setRunning(false);
+                mThread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -57,27 +62,45 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        table.draw(canvas);
-        ball.update(30);
-        ball.draw(canvas);
+        mTable.draw(canvas);
+        mBall.draw(canvas);
+        mBat.draw(canvas);
+        mBat2.draw(canvas);
     }
 
     public void update(){
-        if (ball.getX() < 0) {
-            ball.reverseXVelocity();
-            ball.clearObstacleX(2);
+        if (mBall.getX() <= 0) {
+            mBall.reverseXVelocity();
+            mBall.clearObstacleX(2);
         }
-        else if (ball.getX() > width) {
-            ball.reverseXVelocity();
-            ball.clearObstacleX(width - 22);
+        if (mBall.getX() >= width) {
+            mBall.reverseXVelocity();
+            mBall.clearObstacleX(width - 22);
         }
-        if (ball.getY() < 0) {
-            ball.reverseYVelocity();
-            ball.clearObstacleY(16);
+        if (mBall.getY() < 0) {
+            mBall.reverseYVelocity();
+            mBall.clearObstacleY(16);
         }
-        else if (ball.getX() > height) {
-            ball.reverseYVelocity();
-            ball.clearObstacleY(height - 2);
+        if (mBall.getY() > height) {
+            mBall.reverseYVelocity();
+            mBall.clearObstacleY(height - 2);
         }
-    };
+        if (mBat.isHit(mBall.getX(),mBall.getY())) {
+            mBall.reverseYVelocity();
+            mBall.clearObstacleY(mBall.getY() - 2);
+        }
+        if (mBat2.isHit(mBall.getX(),mBall.getY())) {
+            mBall.reverseYVelocity();
+            mBall.clearObstacleY(16);
+        }
+        mBall.update(30);
+    }
+
+    public BatSprite getBat() {
+        return mBat;
+    }
+
+    public BatSprite getBat2() {
+        return mBat2;
+    }
 }

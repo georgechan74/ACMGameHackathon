@@ -9,13 +9,11 @@ import android.graphics.RectF;
 import java.util.Random;
 
 public class BallSprite {
-
     private float x;
     private float y;
     private float mXVelocity;
     private float mYVelocity;
-    private float mBallWidth;
-    private float mBallHeight;
+    private float mBallRadius;
 
     // SPRITE TUT. Gets the Screen Height/Width
 //    private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -23,11 +21,10 @@ public class BallSprite {
 
     // *** MIGHT NOT need these parameters since we're getting the Screen height/Width
     // when a ball object is created (screenWidth and screenHeight)
-    public BallSprite(int screenX, int screenY){
+    public BallSprite(int screenWidth, int screenHeight){
 
         // Make the mBall size relative to the screen resolution
-        mBallWidth = screenX / 50;
-        mBallHeight = mBallWidth;
+        mBallRadius = screenWidth / 50;
 
         /*
             Start the ball travelling straight up
@@ -35,7 +32,7 @@ public class BallSprite {
         */
 
         // Divide by 4 because ball will travel 1/4th of the screen's size
-        mYVelocity = screenY / 4;
+        mYVelocity = screenHeight / 4;
         mXVelocity = mYVelocity;
     }
 
@@ -94,7 +91,7 @@ public class BallSprite {
         if (canvas != null) {
             Paint paint = new Paint();
             paint.setColor(Color.rgb(250, 0, 0));
-            canvas.drawCircle(x, y, 24, paint);
+            canvas.drawCircle(x, y, mBallRadius, paint);
         }
     }
 

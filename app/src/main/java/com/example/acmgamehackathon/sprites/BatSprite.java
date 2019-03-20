@@ -1,72 +1,84 @@
 package com.example.acmgamehackathon.sprites;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 
 public class BatSprite {
-
-    // RectF is an object that holds four coordinates
-    private RectF mRect;
-
+    private float screenHeight;
     // How long and high our mBat will be
-    private float mLength;
-    private float mHeight;
+    private float batWidth;
+    private float batHeight;
 
-    // X is the far left of the rectangle which forms our mBat
-    // Far-LEFT coord
-    private float mXCoord;
-
-    // Y is the top coordinate
-    private float mYCoord;
-
-    // This will hold the pixels per second speed that
-    // the mBat will move
-    private float mBatSpeed;
-
-    // Which ways can the mBat move
-    public final int STOPPED = 0;
-    public final int LEFT = 1;
-    public final int RIGHT = 2;
-
-    // The screen length and width in pixels
-    private int mScreenX;
-    private int mScreenY;
+    // x and y will be at the center of the rectangle which forms our mBat
+    public float x;
+    public float y;
 
     // This is the constructor method
     // When we create an object from this class we will pass
     // in the screen width and mHeight
-    public BatSprite(int x, int y) {
-
-        mScreenX = x;
-        mScreenY = y;
-
+    public BatSprite(float screenWidth, float screenHeight,int playerNum) {
+        this.screenHeight = screenHeight;
         // 1/8 screen width wide
-        mLength = mScreenX / 8;
-
+        this.batWidth = screenWidth / 4;
         // 1/50 screen mHeight high
-        mHeight = mScreenY / 50;
+        this.batHeight = screenHeight / 50;
 
         // Start mBat in roughly the screen center
-        mXCoord = mScreenX / (float)2.5;
-        mYCoord = mScreenY / (float)1.2;
+        this.x = screenWidth / 2;
 
-        mRect = new RectF(mXCoord, mYCoord, mXCoord + mLength, mYCoord + mHeight);
-
-        // How fast is the mBat in pixels per second
-        mBatSpeed = mScreenX;
-        // Cover entire screen in 1 second
+        if (playerNum == 2) {
+            this.y = screenHeight/6;
+        }
+        else {
+            this.y = screenHeight - (screenHeight / 6);
+        }
     }
 
-    // This is a getter method to make the rectangle that
-    // defines our bat available in PongView class
-    public RectF getRect(){
-        return mRect;
+    public void draw(Canvas canvas) {
+        if (canvas != null) {
+            Paint paint = new Paint();
+            paint.setColor(Color.rgb(100, 100, 200));
+            float left = x - (batWidth/2);
+            float top = y - (batHeight/2);
+            canvas.drawRect(left,top,left + batWidth,top + batHeight,paint);
+        }
     }
 
     // Update the Bat graphics
-    public void update(int x, int y){
-        mRect.left = x;
-        mRect.right = x + mLength;
-        mRect.top = y + mHeight;
-        mRect.bottom = y;
+    public void update(float x, float y){
+        if (y > screenHeight/2) {
+            this.x = x;
+            this.y = y - 20;
+        }
+        else {
+            this.x = x;
+            this.y = y - 20;
+        }
+    }
+
+    public boolean isHit(float ballX, float ballY) {
+        float top;
+        float left = x - (batWidth/2);
+
+        if (y > screenHeight) {
+            top = y - (batHeight/2);
+
+            if (ballY <= (top + 5) && ballY >= (top - 5) && ballX >= (left - 5) && ballX <= (left + batWidth + 5)) {
+                Log.d("Returned","true");
+                return true;
+            }
+        }
+        else {
+            top = y + (batHeight/2);
+
+            if (ballY <= (top + 5) && ballY >= (top - 5) && ballX >= (left - 5) && ballX <= (left + batWidth + 5)) {
+                Log.d("Returned","true");
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -13,7 +13,6 @@ public class MainThread extends Thread {
     private boolean running;
 
     public MainThread(SurfaceHolder surfaceHolder, GameView gameView) {
-
         super();
         this.surfaceHolder = surfaceHolder;
         this.gameView = gameView;

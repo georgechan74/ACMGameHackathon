@@ -1,4 +1,4 @@
-package com.example.acmgamehackathon;
+package com.example.acmgamehackathon.models;
 
 public class Game {
     private long id;
