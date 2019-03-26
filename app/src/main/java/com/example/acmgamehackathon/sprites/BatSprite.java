@@ -19,7 +19,7 @@ public class BatSprite {
     // This is the constructor method
     // When we create an object from this class we will pass
     // in the screen width and mHeight
-    public BatSprite(float screenWidth, float screenHeight,int playerNum) {
+    public BatSprite(float screenHeight,float screenWidth,int playerNum) {
         this.screenHeight = screenHeight;
         // 1/8 screen width wide
         this.batWidth = screenWidth / 4;
@@ -58,27 +58,35 @@ public class BatSprite {
             this.y = y - 20;
         }
     }
+    // will return an int that represents the side of the bat: 1 (left), 2 (right), 3 (top), 4 (bottom)
+    public int getHitCode(float ballX, float ballY) {
+        double hitOffset = 0.5;
+        double top = y - (batHeight / 2);
+        double bottom = y + (batHeight / 2);
+        double left = x - (batWidth / 2);
+        double right = x + (batWidth / 2);
 
-    public boolean isHit(float ballX, float ballY) {
-        float top;
-        float left = x - (batWidth/2);
-
-        if (y > screenHeight) {
-            top = y - (batHeight/2);
-
-            if (ballY <= (top + 5) && ballY >= (top - 5) && ballX >= (left - 5) && ballX <= (left + batWidth + 5)) {
-                Log.d("Returned","true");
-                return true;
+        //first layor is considering the x coordinate
+        if (ballX < left && ballX > left - hitOffset) {
+            if (ballY > top && ballY < bottom) {
+                return 1;
             }
         }
-        else {
-            top = y + (batHeight/2);
-
-            if (ballY <= (top + 5) && ballY >= (top - 5) && ballX >= (left - 5) && ballX <= (left + batWidth + 5)) {
-                Log.d("Returned","true");
-                return true;
+        if (ballX > right && ballX < right + hitOffset) {
+            if (ballY > top && ballY < bottom) {
+                return 2;
             }
         }
-        return false;
+        if (ballY < top && ballY > top - hitOffset) {
+            if (ballX > left && ballX < right) {
+                return 3;
+            }
+        }
+        if (ballY > bottom && ballY < bottom + hitOffset) {
+            if (ballX > left && ballX < right) {
+                return 4;
+            }
+        }
+        return 0;
     }
 }

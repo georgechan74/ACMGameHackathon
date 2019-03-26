@@ -1,19 +1,19 @@
 package com.example.acmgamehackathon.sprites;
 
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 
 import java.util.Random;
 
 public class BallSprite {
     private float x;
     private float y;
-    private float mXVelocity;
-    private float mYVelocity;
-    private float mBallRadius;
+    private float mScreenHeight;
+    private float mScreenWidth;
+    private float xVelocity;
+    private float yVelocity;
+    private float ballRadius;
 
     // SPRITE TUT. Gets the Screen Height/Width
 //    private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -21,63 +21,55 @@ public class BallSprite {
 
     // *** MIGHT NOT need these parameters since we're getting the Screen height/Width
     // when a ball object is created (screenWidth and screenHeight)
-    public BallSprite(int screenWidth, int screenHeight){
-
+    public BallSprite(float screenHeight,float screenWidth){
+        this.mScreenHeight = screenHeight;
+        this.mScreenWidth = screenWidth;
         // Make the mBall size relative to the screen resolution
-        mBallRadius = screenWidth / 50;
+        ballRadius = screenWidth / 50;
 
         /*
             Start the ball travelling straight up
             at a quarter of the screen height per second
         */
+        this.x = screenWidth / 2;
+        this.y = screenHeight / 2;
 
         // Divide by 4 because ball will travel 1/4th of the screen's size
-        mYVelocity = screenHeight / 4;
-        mXVelocity = mYVelocity;
+        yVelocity = screenHeight / 4;
+        xVelocity = yVelocity;
     }
 
     // Change the position each frame
     public void update(long fps){
-        y = y + (mYVelocity / fps);
-        x = x + (mXVelocity / fps);
+        y = y + (yVelocity / fps);
+        x = x + (xVelocity / fps);
+
+        /*
+            Makes sure that the ball doesn't go beyond the width
+            and height of the screen.s
+         */
+        if ((x > mScreenWidth - ballRadius) || (x < ballRadius)) {
+            reverseXVelocity();
+        }
+        if ((y > mScreenHeight - ballRadius) || (y < ballRadius)) {
+            reverseYVelocity();
+        }
     }
 
     // Reverse the vertical heading
     public void reverseYVelocity(){
-        mYVelocity = -mYVelocity;
+        yVelocity = -yVelocity;
     }
 
     // Reverse the horizontal heading
     public void reverseXVelocity(){
-        mXVelocity = -mXVelocity;
-    }
-
-    public void setRandomXVelocity(){
-        // Generate a random number either 0 or 1
-        Random generator = new Random();
-        int answer = generator.nextInt(2);
-
-        if(answer == 0){
-            reverseXVelocity();
-        }
-    }
-
-    // Speed up by 10%
-    // A score of over 20 is quite difficult
-    // Reduce or increase 10 to make this easier or harder
-    public void increaseVelocity(){
-        mXVelocity = mXVelocity + mXVelocity / 10;
-        mYVelocity = mYVelocity + mYVelocity / 10;
+        xVelocity = -xVelocity;
     }
 
     // Not too sure what this code does yet.
     // (Found in part 1)
     public void clearObstacleY(float y){
         this.y = y;
-    }
-
-    public void clearObstacleX(float x){
-        this.x = x;
     }
 
 //    public void reset(int x, int y){
@@ -91,7 +83,7 @@ public class BallSprite {
         if (canvas != null) {
             Paint paint = new Paint();
             paint.setColor(Color.rgb(250, 0, 0));
-            canvas.drawCircle(x, y, mBallRadius, paint);
+            canvas.drawCircle(x, y, ballRadius, paint);
         }
     }
 
